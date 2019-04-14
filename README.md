@@ -18,13 +18,13 @@ How do I get set up?
 
 Summary of set up
 
-The project is currenly set up as a Qt Creator project in Ubuntu 16.04. It uses the openCV libraries, CUDA, openmp, pthreads and Eigen. Of course also uses Qt.
+The project is currenly set up as a Qt Creator project in Ubuntu 16.04. It uses the openCV libraries, CUDA, openmp and Eigen. Of course also uses Qt.
 
 Configuration
 
-File defines.h allows for defining the number of thread used in the CPU, which I currnetly have at 20. When I run the code in my laptop (smaller chip) I change that to 4-8. Also in "defines.h" one can choose if you want to use CUDA and the GPU. Since I don't have a CUDA compatible laptop, I set CUDA_ENABLED to false. The maximum number of GPUs is set to the unrealistic number of 32. I just use that variable to statically define a small array for the cuda class, so there is not that much down side. The code detects the number of available GPUs
+File defines.h allows for defining the number of thread used in the CPU, which I currnetly have at 20. When I run the code in my laptop (smaller chip) I change that to 4-8. Also in "defines.h" one can choose if you want to use CUDA and the GPU. Since I don't have a CUDA compatible laptop, I set CUDA_ENABLED to false. The maximum number of GPUs is set to the unrealistic number of 32. I just use that variable to statically define a small array for the cuda class, so there is not that much down side. The code detects the number of available GPUs. At the moment, since the implementation of the GPU image pyramids, I set the number of GPUs = 1 always.
 
-I use -std=c++11, -fopenmp and -use_fast_math in anticipation of using some of the abreviated function in the future.
+I use -std=c++14, -fopenmp and -use_fast_math in anticipation of using some of the abreviated function in the future.
 
 Dependencies
 
@@ -36,7 +36,7 @@ CUDA: I used a somehow more complex version of CUDA than what I need at the mome
 
 Eigen: This is a easy one to setup. Just needs the header files.
 
-Qt: I use core, gui, widgets and printsupport
+Qt: I use core, gui, widgets and printsupport. 5.3, 5.9 and 5.11 work.
 
 openmp: parallelization of some loops.
 
