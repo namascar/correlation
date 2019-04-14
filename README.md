@@ -4,7 +4,7 @@ This application perform digital image correlation based on the optical flow met
 
 What is this repository for?
 
-It consists of a Qt GUI that calls a multi-threading computational engine, running on the CPU and a CUDA engine to perform the computations in up to 32 GPUs.
+It consists of a Qt GUI that calls a multi-threading computational engine, running on the CPU and a CUDA engine to perform the computations in the GPU.
 
 A set of images can be selected in the GUI, which will display the first two images of the set. Selection of the domain to be correlated can be done using rectangular domains, annular domains and "blob" domain, which are defined by a continuous trace of the mouse over the image. Domains can also be adjusted numerically and via mouse clicks.
 
