@@ -1,5 +1,6 @@
 README
-Ths application perform digital image correlation based on the optical flow method by Lucas and Kanade.
+
+This application perform digital image correlation based on the optical flow method by Lucas and Kanade.
 
 What is this repository for?
 It consists of a Qt GUI that calls a multi-threading computational engine, running on the CPU and a CUDA engine to perform the computations in up to 32 GPUs.
