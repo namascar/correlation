@@ -12,7 +12,7 @@ void cudaPolygon::fillRectangle()
     undeformed_ys.resize( stop + 1 );
     undeformed_ys[ 0 ].resize( size );
 
-    xyr_center.resize( stop + 1 );
+    xy_center.resize( stop + 1 );
 
 	// Make x an indexed vector
     thrust::sequence( thrust::cuda::par.on( domainSelectionStream ) ,
@@ -113,12 +113,7 @@ float *cudaPolygon::getUndYPtr( int level )
 
 float *cudaPolygon::getUndCenter( int level )
 {
-    return thrust::raw_pointer_cast( xyr_center[ level ].data() );
-}
-
-float *cudaPolygon::getDdilDePtr( int level )
-{
-    return thrust::raw_pointer_cast( DdilDe[ level ].data() );
+    return thrust::raw_pointer_cast( xy_center[ level ].data() );
 }
 
 float *cudaPolygon::getParameters( parameterTypeEnum parSrc )
@@ -141,9 +136,9 @@ CorrelationResult *cudaPolygon::getCorrelationResultsToCPU()
                 numberOfModelParameters * sizeof( float ),
                 cudaMemcpyDeviceToDevice );
 
-    // Copy xyr_center to gpuCorrelationResults
+    // Copy xy_center to gpuCorrelationResults
     cudaMemcpy( &gpuCorrelationResults->undCenterX,
-                 thrust::raw_pointer_cast( xyr_center[ 0 ].data() ),
+                 thrust::raw_pointer_cast( xy_center[ 0 ].data() ),
                  2 * sizeof( float ),
                  cudaMemcpyDeviceToDevice );
 
@@ -315,6 +310,7 @@ void cudaPolygon::updatePolygon( deformationDescriptionEnum deformationDescripti
 {
 #if DEBUG_CUDA_POLYGON
     printf( "cudaPolygon::updatePolygon\n" );
+    fflush ( stdout );
 #endif
     switch ( deformationDescription )
     {
@@ -322,28 +318,40 @@ void cudaPolygon::updatePolygon( deformationDescriptionEnum deformationDescripti
             return;
 
         case def_Lagrangian:
-        {
-            switch ( fittingModel )
             {
-                case fm_UVUxUyVxVy:
-                case fm_UVQ:
-                case fm_UV:
-                    xyr_center[ 0 ][ 1 ] += parameters[ parType_lastGood ][ 1 ];
-                case fm_U:
-                    xyr_center[ 0 ][ 0 ] += parameters[ parType_lastGood ][ 0 ];
-                    break;
-                default:
-                    assert ( false );
-                    break;
-            }
+                float dxy[ 2 ] { 0.f , 0.f };
 
-            thrust::for_each
-            (
-                thrust::make_zip_iterator( thrust::make_tuple( undeformed_xs[ 0 ].begin() , undeformed_ys[ 0 ].begin() ) ),
-                thrust::make_zip_iterator( thrust::make_tuple( undeformed_xs[ 0 ].end()   , undeformed_ys[ 0 ].end()   ) ),
-                translateFunctor( parameters[ parType_lastGood ][ 0 ] , parameters[ parType_lastGood ][ 1 ] )
-            );
-        }
+                switch ( fittingModel )
+                {
+                    case fm_UVUxUyVxVy:
+                    case fm_UVQ:
+                    case fm_UV:
+
+                        cudaMemcpy( &dxy[ 0 ], parameters[ parType_lastGood ] , 2 * sizeof( float ) , cudaMemcpyDeviceToHost );
+                        xy_center[ 0 ][ 0 ] += dxy[ 0 ];
+                        xy_center[ 0 ][ 1 ] += dxy[ 1 ];
+
+                        break;
+
+                    case fm_U:
+
+                        cudaMemcpy( &dxy[ 0 ], parameters[ parType_lastGood ] , 1 * sizeof( float ) , cudaMemcpyDeviceToHost );
+                        xy_center[ 0 ][ 0 ] += dxy[ 0 ];
+
+                        break;
+
+                    default:
+                        assert ( false );
+                        break;
+                }
+
+                thrust::for_each
+                (
+                    thrust::make_zip_iterator( thrust::make_tuple( undeformed_xs[ 0 ].begin() , undeformed_ys[ 0 ].begin() ) ),
+                    thrust::make_zip_iterator( thrust::make_tuple( undeformed_xs[ 0 ].end()   , undeformed_ys[ 0 ].end()   ) ),
+                    translateFunctor( dxy[ 0 ] , dxy[ 1 ] )
+                );
+            }
             break;
 
         case def_strict_Lagrangian:
@@ -385,7 +393,7 @@ void cudaPolygon::updatePolygon( deformationDescriptionEnum deformationDescripti
 void cudaPolygonAnnular::updatePolygon( deformationDescriptionEnum deformationDescription )
 {
 #if DEBUG_CUDA_POLYGON
-    printf( "cudaPolygon::updatePolygon\n" );
+    printf( "cudaPolygonAnnular::updatePolygon\n" );
 #endif
     switch ( deformationDescription )
     {
@@ -400,7 +408,7 @@ void cudaPolygonAnnular::updatePolygon( deformationDescriptionEnum deformationDe
             {
                 case fm_U:
 
-                    xyr_center[ 0 ][ 0 ] += parameters[ parType_lastGood ][ 0 ];
+                    xy_center[ 0 ][ 0 ] += parameters[ parType_lastGood ][ 0 ];
 
                     dx = parameters[ parType_lastGood ][ 0 ];
                     dy = 0.f;
@@ -411,8 +419,8 @@ void cudaPolygonAnnular::updatePolygon( deformationDescriptionEnum deformationDe
                 case fm_UVQ:
                 case fm_UVUxUyVxVy:
 
-                    xyr_center[ 0 ][ 0 ] += parameters[ parType_lastGood ][ 0 ];
-                    xyr_center[ 0 ][ 1 ] += parameters[ parType_lastGood ][ 1 ];
+                    xy_center[ 0 ][ 0 ] += parameters[ parType_lastGood ][ 0 ];
+                    xy_center[ 0 ][ 1 ] += parameters[ parType_lastGood ][ 1 ];
 
                     dx = parameters[ parType_lastGood ][ 0 ];
                     dy = parameters[ parType_lastGood ][ 1 ];
@@ -592,10 +600,10 @@ void cudaPolygon::deallocateGlobalABChi()
 
 void cudaPolygon::makeUndCenter0( )
 {
-    xyr_center[ 0 ].resize( 2 );
+    xy_center[ 0 ].resize( 2 );
 
-    xyr_center[ 0 ][ 0 ] = thrust::reduce( undeformed_xs[ 0 ].begin() , undeformed_xs[ 0 ].end() ) / (float) undeformed_xs[ 0 ].size();
-    xyr_center[ 0 ][ 1 ] = thrust::reduce( undeformed_ys[ 0 ].begin() , undeformed_ys[ 0 ].end() ) / (float) undeformed_ys[ 0 ].size();
+    xy_center[ 0 ][ 0 ] = thrust::reduce( undeformed_xs[ 0 ].begin() , undeformed_xs[ 0 ].end() ) / (float) undeformed_xs[ 0 ].size();
+    xy_center[ 0 ][ 1 ] = thrust::reduce( undeformed_ys[ 0 ].begin() , undeformed_ys[ 0 ].end() ) / (float) undeformed_ys[ 0 ].size();
 
 #if DEBUG_CUDA_POLYGON
         printf( "cudaPolygon::makeUndCenter0\n" );
@@ -609,13 +617,13 @@ void cudaPolygon::makeAllUndCenters( )
 
     for ( int ilevel = firstLevel ; ilevel <= stop ; ilevel += step )
     {
-        xyr_center[ ilevel ] = xyr_center[ prevLevel ];
+        xy_center[ ilevel ] = xy_center[ prevLevel ];
 
         thrust::transform
         (
-            xyr_center[ ilevel ].begin() ,
-            xyr_center[ ilevel ].end() ,
-            xyr_center[ ilevel ].begin() ,
+            xy_center[ ilevel ].begin() ,
+            xy_center[ ilevel ].end() ,
+            xy_center[ ilevel ].begin() ,
             scale1DFunctor( prevLevel , ilevel )
         );
 #if DEBUG_CUDA_POLYGON
@@ -628,7 +636,7 @@ void cudaPolygon::makeAllUndCenters( )
     {
         printf( " cudaPolygon::makeAllUndCenters prevLevel = %d\n" , prevLevel );
 
-        thrust::host_vector< float > h_xs = xyr_center[ prevLevel ];
+        thrust::host_vector< float > h_xs = xy_center[ prevLevel ];
 
         printf( "x_center = %f , y_center = %f \n",
                 h_xs[ 0 ] , h_xs[ 1 ] );
@@ -636,7 +644,7 @@ void cudaPolygon::makeAllUndCenters( )
 
     printf( " cudaPolygon::makeAllUndCenters ilevel = %d\n" , ilevel );
 
-    thrust::host_vector< float > h_xs = xyr_center[ ilevel ];
+    thrust::host_vector< float > h_xs = xy_center[ ilevel ];
 
     printf( "x_center = %f , y_center = %f \n",
             h_xs[ 0 ] , h_xs[ 1 ] ),

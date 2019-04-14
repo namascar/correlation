@@ -176,7 +176,6 @@ public:
     float              *getUndXPtr                  ( int iSector , int level_ );
     float              *getUndYPtr                  ( int iSector , int level_ );
     float              *getUndCenter                ( int iSector , int level_ );
-    float              *getDdilDePtr                ( int iSector , int level_ );
     float              *getGlobalABChi              ( int iSector );
     float              *getParameters               ( int iSector , parameterTypeEnum parSrc );
     void                initializeParametersLevel0  ( int iSector , float *initialGuess_ );

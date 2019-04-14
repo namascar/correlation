@@ -360,14 +360,11 @@ protected:
 
     pyramid_vector  undeformed_xs;
     pyramid_vector  undeformed_ys;
-    pyramid_vector  xyr_center;
+    pyramid_vector  xy_center;
 
     thrust::device_vector< float > deformed_xs0;
     thrust::device_vector< float > deformed_ys0;
     bool deformed0IsReady = false;
-
-    // Derivative of the dilation term ( 1 + e ( L / R - 1 ) ) wrt e
-    pyramid_vector  DdilDe;
 
     std::vector< float* > parameters;
     int                   currentPyramidLevel = 0;
@@ -420,7 +417,6 @@ public:
     float               *getUndXPtr                 ( int level );
     float               *getUndYPtr                 ( int level );
     float               *getUndCenter               ( int level );
-    float               *getDdilDePtr               ( int level );
     float               *getGlobalABChi             ();
     float               *getParameters              ( parameterTypeEnum parSrc );
     CorrelationResult   *getCorrelationResultsToCPU ();
@@ -483,7 +479,6 @@ class cudaPolygonAnnular : public cudaPolygon
 {
 
 private:
-    void            makeAllDdilDe                   ();
     void            cleanAnnularRectangle0          ( float r , float dr , float a , float da,
                                                       float cx , float cy , int as );
 

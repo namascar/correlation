@@ -405,11 +405,6 @@ float *cudaPyramid::getUndCenter( int iSector , int level_ )
     return polygons[ iSector ]->getUndCenter( level_ );
 }
 
-float *cudaPyramid::getDdilDePtr( int iSector , int level_ )
-{
-    return polygons[ iSector ]->getDdilDePtr( level_ );
-}
-
 float *cudaPyramid::getGlobalABChi( int iSector )
 {
     return polygons[ iSector ]->getGlobalABChi();

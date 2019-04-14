@@ -121,7 +121,6 @@ kModel_inPlace
                                  xMinusCenter * d_parameters[ 4 ] +
                                  yMinusCenter * d_parameters[ 5 ];
                 }
-
                 break;
 
             default:
