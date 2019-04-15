@@ -1,6 +1,7 @@
 README
 
-This application perform digital image correlation based on the optical flow method by Lucas and Kanade.
+This application perform digital image correlation based on the optical flow method by Lucas and Kanade. A small video 
+that illustrates how this program works is at https://youtu.be/Ak4puzdqWDM
 
 What is this repository for?
 
