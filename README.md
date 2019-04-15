@@ -4,7 +4,6 @@ This application perform digital image correlation based on the optical flow met
 that illustrates how this program works is at https://youtu.be/Ak4puzdqWDM
 
 ![gui](/gui.png)
-Format: ![Alt Text](url)
 
 What is this repository for?
 
