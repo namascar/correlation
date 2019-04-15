@@ -15,6 +15,10 @@ The correlation images are transformed into image pyramids (https://en.wikipedia
 
 Initial guess for the correlation algorithm can be automatic, null or user-selected. In the last mode, the user can adjust the position of the domain in the first deformed image via mouse clicks. After the initial guess is defined for the first two images, the motion is assumed to be at constant velocity, so past deformations are extrapolated to produce the next initial guesses.
 
+Correlation can be performed using the models U, UV, UVQ and UVUxUyVxVy. The first model, U, computes only a displacement in the horizontal direction, Last model, UVUxUyVxVy computes displacements in both directions, and their 2D gradients. The model UVQ is a hybrid representation, quasi-rigid body, with a small angle approximation.
+
+The user can also select how the nterpolation is done on the deformed images. Choices are: "nearest", "bilinear" and "bicubic" interpolation. 
+
 Reports can be saved with the resulting correlation parameters, number of iterations and chi.
 
 Check out the video for an example (correlation_class/video_instructions.mp4)
