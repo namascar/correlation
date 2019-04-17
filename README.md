@@ -17,11 +17,11 @@ Initial guess for the correlation algorithm can be automatic, null or user-selec
 
 Correlation can be performed using the models U, UV, UVQ and UVUxUyVxVy. The first model, U, computes only a displacement in the horizontal direction, Last model, UVUxUyVxVy computes displacements in both directions, and their 2D gradients. The model UVQ is a hybrid representation, quasi-rigid body, with a small angle approximation.
 
-The user can also select how the nterpolation is done on the deformed images. Choices are: "nearest", "bilinear" and "bicubic" interpolation. 
+The user can also select how the interpolation is done on the deformed images. Choices are: "nearest", "bilinear" and "bicubic" interpolation. 
+
+User can also choose the reference image for the correlation, the previous image or the first image.
 
 Reports can be saved with the resulting correlation parameters, number of iterations and chi.
-
-Check out the video for an example (correlation_class/video_instructions.mp4)
 
 How do I get set up?
 
