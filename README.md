@@ -33,7 +33,7 @@ Configuration
 
 Gui allows for defining the number of thread used in the CPU, which I currnetly have at 20. When I run the code in my laptop (smaller chip) I change that to 4-8. Also in gui one can choose if you want to use CUDA and the GPU. Since I don't have a CUDA compatible laptop, I set CUDA_ENABLED to false in "defines.h". The maximum number of GPUs is set to the unrealistic number of 32. I just use that variable to statically define a small array for the cuda class, so there is not that much down side. The code detects the number of available GPUs. At the moment, since the implementation of the GPU image pyramids, I set the number of GPUs = 1 always, cause I have not propagated the pyramid arcitecture and multi-GPU architecture together.
 
-I use -std=c++14, -fopenmp and -use_fast_math in anticipation of using some of the abreviated function in the future.
+I use -std=c++14, -fopenmp and -use_fast_math in anticipation of using some of the abbreviated function in the future.
 
 Dependencies
 
