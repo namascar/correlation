@@ -39,7 +39,7 @@
 #define DEBUG_SOLVER_CUDA false
 #define DEBUG_CORRELATION_INFO false
 #define DEBUG_SOLVER false
-#define DEBUG_NEWTON_RAPHSON false  // print iteration info
+#define DEBUG_NEWTON_RAPHSON false // print iteration info
 #define DEBUG_NEWTON_RAPHSON_FAIL_DUMP false
 #define DEBUG_NEWTON_RAPHSON_CUDA false
 #define DEBUG_MODEL false
