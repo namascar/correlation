@@ -84,9 +84,12 @@ CUDA_INC = -I$$CUDA_DIR/include
 # CUDA compile - step 1
 # per http://forums.nvidia.com/index.php?showtopic=171651
 #     https://wiki.qt.io/Undocumented_QMake
-cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -m64 -O3 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
-                         $$CUDA_INC $$CUDA_LIBS  ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}\
-                         2>&1 | sed -r \"s/\\(([0-9]+)\\)/:\\1/g\" 1>&2
+#cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -m64 -O3 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
+#                         $$CUDA_INC $$CUDA_LIBS  ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}\
+#                         2>&1 | sed -r \"s/\\(([0-9]+)\\)/:\\1/g\" 1>&2
+cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -m64 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
+                          $$CUDA_INC $$CUDA_LIBS  ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}\
+                          2>&1 | sed -r \"s/\\(([0-9]+)\\)/:\\1/g\" 1>&2
 # nvcc error printout format ever so slightly different from gcc
 
 cuda_compile.dependency_type = TYPE_C
