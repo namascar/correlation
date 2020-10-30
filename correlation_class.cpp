@@ -905,7 +905,7 @@ void CorrelationClass::Newton_Raphson_dump(int pyramid_level) {
          "def_wy\n");
 
   for (int ipoint = 0; ipoint < number_of_points; ++ipoint) {
-    if (abs(w_results[ipoint * number_of_colors]) > 1000) {
+    if (std::abs(w_results[ipoint * number_of_colors]) > 1000) {
       printf(" correlation:           %6d     %10.4f   %10.4f   %10.4f   "
              "%10.4f   %10.4f   %10.4f   %10.4f   %10.4f\n",
              ipoint, und_xy_positions[ipoint * 2],

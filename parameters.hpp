@@ -7,6 +7,7 @@
 // General includes
 #include "domains.hpp"
 #include <algorithm>
+#include <cmath>
 #include <utility> // std::pair
 #include <vector>
 

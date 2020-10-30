@@ -10,7 +10,7 @@ QT += printsupport
 
 TARGET = correlation
 TEMPLATE = app
-CONFIG += c++14
+CONFIG += c++17
 
 HEADERS       = \
                 imageLabel.h \
@@ -56,7 +56,7 @@ CUDA_SOURCES  += cuda_class.cu\
 LIBS += -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lnvToolsExt
 #eigen requires only to include the header files, not libs
 INCLUDEPATH += "/usr/local/include/eigen"
-INCLUDEPATH += "/usr/local/include/opencv2"
+INCLUDEPATH += "/usr/local/include/opencv4"
 
 QMAKE_LFLAGS += -fopenmp
 QMAKE_CXXFLAGS += -fopenmp
@@ -71,21 +71,21 @@ QMAKE_LIBDIR += $$CUDA_DIR/lib64
 LIBS += -lcudart -lcuda -lcusolver -lcublas -lcudadevrt
 CUDA_LIBS += -lcudart -lcuda -lcusolver -lcublas -lcudadevrt
 # GPU architecture
-CUDA_ARCH     = sm_60
+CUDA_ARCH     = sm_61
 # Here are some NVCC flags I've always used by default.
 # omp from https://stackoverflow.com/questions/12289387/cuda-combined-with-openmp
-NVCCFLAGS     = --compiler-options -fno-strict-aliasing -use_fast_math -std=c++11 -Xcompiler -fopenmp -rdc=true --ptxas-options=-v
+NVCCFLAGS     = --compiler-options -fno-strict-aliasing -use_fast_math -std=c++17 -Xcompiler -fopenmp -rdc=true --ptxas-options=-v
 
 # Prepare the extra compiler configuration (taken from the nvidia forum - i'm not an expert in this part)
 CUDA_INC = -I$$CUDA_DIR/include
+CUDA_INC += "-I/usr/local/include/opencv4"
 
 # CUDA COMPILATION done in two steps to allow Dynamic Parallelism
 
 # CUDA compile - step 1
 # per http://forums.nvidia.com/index.php?showtopic=171651
 #     https://wiki.qt.io/Undocumented_QMake
-#cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -03 -m64 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
-cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -m64 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
+cuda_compile.commands =  $$CUDA_DIR/bin/nvcc -ccbin g++ -O3 -m64 -arch=$$CUDA_ARCH -c $$NVCCFLAGS \
                          $$CUDA_INC $$CUDA_LIBS  ${QMAKE_FILE_NAME} -o ${QMAKE_FILE_OUT}\
                          2>&1 | sed -r \"s/\\(([0-9]+)\\)/:\\1/g\" 1>&2
 # nvcc error printout format ever so slightly different from gcc
@@ -103,7 +103,6 @@ cuda_compile.variable_out += OBJECTS
 
 # Tell Qt that we want add more stuff to the Makefile
 QMAKE_EXTRA_COMPILERS += cuda_compile
-
 
 # CUDA linker - step 2
 # per https://declanrussell.com/2015/04/16/compiling-cuda-dynamic-parallelism-with-qt-creator/
