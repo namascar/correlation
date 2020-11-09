@@ -430,7 +430,7 @@ bool managerClass::perform_single_frame_correlation_rectangular(
                 << time_all_point_selection << '\n';
 #endif
 
-      CorrelationResult *correlationResults;
+      CorrelationResult *correlationResults = nullptr;
 
       // Call the correlator with these points
       switch (processor) {
@@ -693,7 +693,7 @@ bool managerClass::perform_single_frame_correlation_annular(
                 << time_all_point_selection << '\n';
 #endif
 
-      CorrelationResult *correlationResults;
+      CorrelationResult *correlationResults = nullptr;
 
       switch (processor) {
       case processor_CPU:
@@ -1133,7 +1133,7 @@ bool managerClass::perform_single_frame_correlation_blob(
             << duration_point_selection << '\n';
 #endif
 
-  CorrelationResult *correlationResults;
+  CorrelationResult *correlationResults = nullptr;
 
   // Call the correlator with these points
   switch (processor) {

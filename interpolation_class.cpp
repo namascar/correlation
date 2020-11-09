@@ -1,42 +1,42 @@
 #include "interpolation_class.hpp"
 
-float modelU_distort_x(float x, float y, float cx, float cy, float ro,
+float modelU_distort_x(float x, [[maybe_unused]] float y, [[maybe_unused]] float cx, [[maybe_unused]] float cy, [[maybe_unused]] float ro,
                        float *model_parameters) {
   return x + model_parameters[0];
 }
 
-float modelU_distort_y(float x, float y, float cx, float cy, float ro,
-                       float *model_parameters) {
+float modelU_distort_y([[maybe_unused]] float x, float y, [[maybe_unused]] float cx, [[maybe_unused]] float cy, [[maybe_unused]] float ro,
+                       [[maybe_unused]] float *model_parameters) {
   return y;
 }
 
-float modelUV_distort_x(float x, float y, float cx, float cy, float ro,
+float modelUV_distort_x(float x, [[maybe_unused]] float y, [[maybe_unused]] float cx, [[maybe_unused]] float cy, [[maybe_unused]] float ro,
                         float *model_parameters) {
   return x + model_parameters[0];
 }
 
-float modelUV_distort_y(float x, float y, float cx, float cy, float ro,
+float modelUV_distort_y([[maybe_unused]] float x, float y, [[maybe_unused]] float cx, [[maybe_unused]] float cy, [[maybe_unused]] float ro,
                         float *model_parameters) {
   return y + model_parameters[1];
 }
 
-float modelUVQ_distort_x(float x, float y, float cx, float cy, float ro,
+float modelUVQ_distort_x(float x, float y, [[maybe_unused]] float cx, float cy, [[maybe_unused]] float ro,
                          float *model_parameters) {
   return x + model_parameters[0] - (y - cy) * model_parameters[2];
 }
 
-float modelUVQ_distort_y(float x, float y, float cx, float cy, float ro,
+float modelUVQ_distort_y(float x, float y, float cx, [[maybe_unused]] float cy, [[maybe_unused]] float ro,
                          float *model_parameters) {
   return y + model_parameters[1] + (x - cx) * model_parameters[2];
 }
 
-float modelUVUxUyVxVy_distort_x(float x, float y, float cx, float cy, float ro,
+float modelUVUxUyVxVy_distort_x(float x, float y, float cx, float cy, [[maybe_unused]] float ro,
                                 float *model_parameters) {
   return x + model_parameters[0] + (x - cx) * model_parameters[2] +
          (y - cy) * model_parameters[3];
 }
 
-float modelUVUxUyVxVy_distort_y(float x, float y, float cx, float cy, float ro,
+float modelUVUxUyVxVy_distort_y(float x, float y, float cx, float cy, [[maybe_unused]] float ro,
                                 float *model_parameters) {
   return y + model_parameters[1] + (x - cx) * model_parameters[4] +
          (y - cy) * model_parameters[5];

@@ -55,7 +55,7 @@ CUDA_SOURCES  += cuda_class.cu\
 
 LIBS += -lopencv_highgui -lopencv_core -lopencv_imgproc -lopencv_imgcodecs -lnvToolsExt
 #eigen requires only to include the header files, not libs
-INCLUDEPATH += "/usr/local/include/eigen"
+INCLUDEPATH += "/usr/local/include/Eigen"
 INCLUDEPATH += "/usr/local/include/opencv4"
 
 QMAKE_LFLAGS += -fopenmp

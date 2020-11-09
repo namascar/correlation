@@ -465,7 +465,8 @@ void MainApp::open() {
 }
 
 void MainApp::print() {
-  Q_ASSERT(und_imageLabel->pixmap());
+  Q_ASSERT(!und_imageLabel->pixmap(Qt::ReturnByValueConstant()).isNull());
+
 #if !defined(QT_NO_PRINTER) && !defined(QT_NO_PRINTDIALOG)
 
   QPrintDialog dialog(&printer, this);
@@ -473,11 +474,12 @@ void MainApp::print() {
   if (dialog.exec()) {
     QPainter painter(&printer);
     QRect rect = painter.viewport();
-    QSize size = und_imageLabel->pixmap()->size();
+    QPixmap pixmap = und_imageLabel->pixmap(Qt::ReturnByValueConstant());
+    QSize size = pixmap.size();
     size.scale(rect.size(), Qt::KeepAspectRatio);
     painter.setViewport(rect.x(), rect.y(), size.width(), size.height());
-    painter.setWindow(und_imageLabel->pixmap()->rect());
-    painter.drawPixmap(0, 0, *und_imageLabel->pixmap());
+    painter.setWindow(pixmap.rect());
+    painter.drawPixmap(0, 0, pixmap);
   }
 #endif
 }
@@ -1309,11 +1311,12 @@ void MainApp::fitToWindow() {
   if (ui->actionFit_to_Window->isChecked()) {
     ui->scrollArea_und_image->setWidgetResizable(true);
     ui->scrollArea_def_image->setWidgetResizable(true);
+    QPixmap pixmap = und_imageLabel->pixmap(Qt::ReturnByValueConstant());
 
     scale_x = float(ui->scrollArea_und_image->width()) /
-              float(und_imageLabel->pixmap()->width());
+              float(pixmap.width());
     scale_y = float(ui->scrollArea_und_image->height()) /
-              float(und_imageLabel->pixmap()->height());
+              float(pixmap.height());
 
     und_imageLabel->realScale_x = scale_x;
     und_imageLabel->realScale_y = scale_y;
@@ -1335,7 +1338,7 @@ void MainApp::fitToWindow() {
 }
 
 void MainApp::scaleImage(double factor) {
-  Q_ASSERT(und_imageLabel->pixmap());
+  Q_ASSERT(!und_imageLabel->pixmap(Qt::ReturnByValueConstant()).isNull());
 
   scale_x *= factor;
   scale_y *= factor;
@@ -1351,14 +1354,16 @@ void MainApp::scaleImage(double factor) {
   // SLOT( scaleSquare() ) );
   emit valueChanged_scaleSelection();
 
+  QPixmap pixmap = und_imageLabel->pixmap(Qt::ReturnByValueConstant());
+  QPixmap def_pixmap = def_imageLabel->pixmap(Qt::ReturnByValueConstant());
   ui->scrollArea_und_image->setWidgetResizable(false);
   ui->scrollArea_def_image->setWidgetResizable(false);
   und_imageLabel->resize(
-      und_imageLabel->realScale_x * und_imageLabel->pixmap()->width(),
-      und_imageLabel->realScale_y * und_imageLabel->pixmap()->height());
+      und_imageLabel->realScale_x * pixmap.width(),
+      und_imageLabel->realScale_y * pixmap.height());
   def_imageLabel->resize(
-      def_imageLabel->realScale_x * def_imageLabel->pixmap()->width(),
-      def_imageLabel->realScale_y * def_imageLabel->pixmap()->height());
+      def_imageLabel->realScale_x * def_pixmap.width(),
+      def_imageLabel->realScale_y * def_pixmap.height());
 
   adjustScrollBar(ui->scrollArea_und_image->horizontalScrollBar(), factor);
   adjustScrollBar(ui->scrollArea_und_image->verticalScrollBar(), factor);

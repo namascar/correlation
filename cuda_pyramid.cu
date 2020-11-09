@@ -88,11 +88,11 @@ void cudaImage::uploadImage0(const cv::Mat &image_in) {
 #endif
 
   cudaError_t err = cudaSuccess;
-
-  err = cudaMemcpyToArrayAsync(d_images_cuArray[0], 0, 0, image_in.data,
-                               rowsLevel0 * colsLevel0 * number_of_colors *
-                                   sizeof(unsigned char),
-                               cudaMemcpyHostToDevice, stream);
+  err = cudaMemcpy2DToArrayAsync(d_images_cuArray[0], 0, 0, image_in.data,
+             colsLevel0 * number_of_colors * sizeof(unsigned char),
+             colsLevel0 * number_of_colors * sizeof(unsigned char),
+             rowsLevel0,
+             cudaMemcpyHostToDevice, stream);
 
   if (err != cudaSuccess) {
     printf(
@@ -327,10 +327,14 @@ void cudaImage::testPyramid() {
 
     images[ilevel] = cv::Mat(rows, cols, type);
 
-    err = cudaMemcpyFromArray(images[ilevel].data, d_images_cuArray[ilevel], 0,
-                              0, rows * cols * number_of_colors *
-                                     sizeof(unsigned char),
+    err = cudaMemcpy2DFromArray(
+                              images[ilevel].data,
+                              cols * number_of_colors * sizeof(unsigned char),
+                              d_images_cuArray[ilevel], 0, 0,
+                              cols * number_of_colors * sizeof(unsigned char),
+                              rows,
                               cudaMemcpyDeviceToHost);
+
     if (err != cudaSuccess) {
       printf("Failed to copy images to host (error code %s)!\n",
              cudaGetErrorString(err));
