@@ -22,7 +22,7 @@
 #include <stdio.h>
 #include <vector>
 
-#include <nvToolsExt.h> // Marker for the nvvp profiler
+#include <nvtx3/nvToolsExt.h> // Marker for the nvvp profiler
 
 typedef thrust::host_vector<thrust::tuple<float, float, float>>
     LineEquationsHost;

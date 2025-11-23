@@ -23,7 +23,7 @@
 #include <future>
 #include <thread>
 
-#include <nvToolsExt.h> // Marker for the nvvp profiler
+#include <nvtx3/nvToolsExt.h> // Marker for the nvvp profiler
 
 class cudaImage {
   int start{0};
