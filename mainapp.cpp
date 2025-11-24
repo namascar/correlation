@@ -79,7 +79,7 @@ MainApp::MainApp(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainApp) {
   reference_image_iv = refImage_First;
   subdivisions->reference_imageBox->addItems(reference_imageList);
   subdivisions->reference_imageBox->setCurrentIndex(reference_image_iv);
-  // allows disableing the First image reference model in Lagrangian deformation
+  // allows disabling the First image reference model in Lagrangian deformation
   // descriptions
   comboBox_reference_image = qobject_cast<QStandardItemModel *>(
       subdivisions->reference_imageBox->model());
@@ -183,7 +183,7 @@ MainApp::MainApp(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainApp) {
   und_imageLabel->model = model_iv;
   def_imageLabel->model = model_iv;
 
-  // Using the initial_guess_iv = Null and model_iv, puts togueter an initial
+  // Using the initial_guess_iv = Null and model_iv, puts together an initial
   // guess and shares it
   // with the manager and def_imageLabel
   selectInitialGuess();
@@ -222,7 +222,7 @@ MainApp::MainApp(QWidget *parent) : QMainWindow(parent), ui(new Ui::MainApp) {
   last_directory_name =
       "/home/namascar/Documents/data/corr_img/stick_slip2/jpg";
 
-  // Define MainApp behaviour
+  // Define MainApp behavior
   createActions();
 
 #if AUTO_PILOT

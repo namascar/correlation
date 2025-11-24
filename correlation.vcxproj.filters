@@ -138,14 +138,14 @@
     <ClInclude Include="cuda_pyramid.cuh">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="cuda_solver.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="correlationKernel.cuh">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <CustomBuild Include="debug\moc_predefs.h.cbt">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
-    <CustomBuild Include="release\moc_predefs.h.cbt">
-      <Filter>Generated Files</Filter>
-    </CustomBuild>
     <ClInclude Include="ui_mainapp.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
@@ -166,6 +166,12 @@
       <Filter>Source Files</Filter>
     </CudaCompile>
     <CudaCompile Include="cuda_pyramid.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="cuda_solver.cu">
+      <Filter>Source Files</Filter>
+    </CudaCompile>
+    <CudaCompile Include="correlationKernel.cu">
       <Filter>Source Files</Filter>
     </CudaCompile>
   </ItemGroup>

@@ -5,7 +5,7 @@
 //	1) perform the transformation by the corresponding modeler
 // 	2) interpolate the resulting transformed location in the deformed
 //		image to get its intensity (w) and gradients (dwdxy)
-//  3) Assembler puts togeter the thread contribution to the mat_A and vec_B
+//  3) Assembler puts together the thread contribution to the mat_A and vec_B
 //  -coming soon
 // void *h_interpolation( void *correlation_thread_data_in )
 s_correlation_thread_data
